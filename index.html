@@ -1,0 +1,700 @@
+<!--
+  THỐNG KÊ DÂN CƯ HÒA KHÁNH – BẢN NHÚNG WORDPRESS V2
+  - Mã JavaScript được giữ trên một dòng và thêm ngoại lệ trì hoãn/tối ưu.
+  - Giữ nguyên URL Web App, Apps Script, dữ liệu và các chức năng thống kê.
+  - Nếu WordPress lọc thẻ script, cài hoakhanhthongke.zip rồi dùng [hoakhanh_thongke].
+-->
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+#hkStatsApp {
+    --hk-primary: #2563eb;
+    --hk-primary-dark: #1d4ed8;
+    --hk-border: #dbe4ef;
+    --hk-text: #172033;
+    --hk-muted: #64748b;
+    --hk-bg: #f8fafc;
+    --hk-white: #ffffff;
+
+    width: 100%;
+    max-width: 1200px;
+    margin: 24px auto;
+    padding: 0 14px;
+    box-sizing: border-box;
+    font-family: Arial, "Helvetica Neue", sans-serif;
+    color: var(--hk-text);
+}
+
+#hkStatsApp *,
+#hkStatsApp *::before,
+#hkStatsApp *::after {
+    box-sizing: border-box;
+}
+
+#hkStatsApp .hk-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 18px !important;
+    width: 100% !important;
+    padding: 22px 26px !important;
+    margin: 0 0 24px 0 !important;
+    border-radius: 16px !important;
+    background: linear-gradient(135deg, #2447b8 0%, #3882f6 100%) !important;
+    color: #fff !important;
+    box-shadow: 0 12px 25px rgba(37, 99, 235, .20) !important;
+}
+
+#hkStatsApp .hk-header-left {
+    min-width: 0;
+}
+
+#hkStatsApp .hk-title {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    margin: 0 0 5px 0 !important;
+    padding: 0 !important;
+    color: #fff !important;
+    font-size: 28px !important;
+    line-height: 1.2 !important;
+    font-weight: 700 !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+}
+
+#hkStatsApp .hk-subtitle {
+    margin: 0 !important;
+    color: rgba(255,255,255,.72) !important;
+    font-size: 14px !important;
+}
+
+#hkStatsApp .hk-btn {
+    appearance: none !important;
+    border: 1px solid transparent !important;
+    border-radius: 999px !important;
+    padding: 10px 16px !important;
+    min-height: 42px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 7px !important;
+    cursor: pointer !important;
+    font-size: 14px !important;
+    line-height: 1 !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+    transition: .18s ease !important;
+    white-space: nowrap !important;
+    margin: 0 !important;
+}
+
+#hkStatsApp .hk-btn:disabled {
+    opacity: .65 !important;
+    cursor: not-allowed !important;
+}
+
+#hkStatsApp .hk-btn-light {
+    background: #fff !important;
+    color: var(--hk-primary) !important;
+    border-color: #fff !important;
+}
+
+#hkStatsApp .hk-btn-light:hover {
+    background: #eff6ff !important;
+}
+
+#hkStatsApp .hk-btn-outline {
+    background: #fff !important;
+    color: #475569 !important;
+    border-color: #94a3b8 !important;
+}
+
+#hkStatsApp .hk-btn-outline:hover {
+    background: #f8fafc !important;
+}
+
+#hkStatsApp .hk-btn-excel {
+    background: #159447 !important;
+    color: #fff !important;
+    border-color: #159447 !important;
+}
+
+#hkStatsApp .hk-btn-excel:hover {
+    background: #0f7d3b !important;
+}
+
+#hkStatsApp .hk-card {
+    width: 100% !important;
+    margin: 0 0 22px 0 !important;
+    padding: 22px !important;
+    background: #fff !important;
+    border: 1px solid var(--hk-border) !important;
+    border-radius: 15px !important;
+    box-shadow: 0 4px 12px rgba(15,23,42,.06) !important;
+}
+
+#hkStatsApp .hk-card-head {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 14px !important;
+    flex-wrap: wrap !important;
+    width: 100% !important;
+    margin: 0 0 18px 0 !important;
+    padding: 0 !important;
+}
+
+#hkStatsApp .hk-section-title {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 9px !important;
+    flex: 0 1 auto !important;
+    width: auto !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    color: #111827 !important;
+    font-size: 17px !important;
+    line-height: 1.35 !important;
+    font-weight: 700 !important;
+    text-align: left !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+}
+
+#hkStatsApp .hk-section-title i {
+    color: #5b8ff8 !important;
+    flex: 0 0 auto;
+}
+
+#hkStatsApp .hk-stats-pill {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 auto !important;
+    padding: 7px 12px !important;
+    border: 1px solid #d7dee8 !important;
+    border-radius: 999px !important;
+    background: #f8fafc !important;
+    color: #64748b !important;
+    font-size: 13px !important;
+    white-space: nowrap !important;
+}
+
+#hkStatsApp .hk-tools {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 8px !important;
+    flex-wrap: wrap !important;
+    margin-left: auto !important;
+}
+
+#hkStatsApp .hk-select {
+    width: auto !important;
+    min-width: 260px !important;
+    height: 42px !important;
+    margin: 0 !important;
+    padding: 8px 34px 8px 12px !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 10px !important;
+    background-color: #fff !important;
+    color: #334155 !important;
+    font-size: 14px !important;
+    line-height: 1.2 !important;
+    box-shadow: none !important;
+}
+
+#hkStatsApp .hk-table-wrap {
+    width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+}
+
+#hkStatsApp table.hk-table {
+    width: 100% !important;
+    min-width: 760px !important;
+    margin: 0 !important;
+    border-collapse: collapse !important;
+    border-spacing: 0 !important;
+    background: #fff !important;
+}
+
+#hkStatsApp table.hk-table thead th {
+    padding: 11px 14px !important;
+    border: 0 !important;
+    border-bottom: 1px solid #cfd9e6 !important;
+    background: #eef3f8 !important;
+    color: #172033 !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    font-size: 12px !important;
+    line-height: 1.3 !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: .02em !important;
+}
+
+#hkStatsApp table.hk-table tbody td {
+    padding: 12px 14px !important;
+    border: 0 !important;
+    border-bottom: 1px solid #e6edf5 !important;
+    background: #fff !important;
+    color: #334155 !important;
+    vertical-align: middle !important;
+    font-size: 14px !important;
+    line-height: 1.45 !important;
+}
+
+#hkStatsApp table.hk-table tbody tr:hover td {
+    background: #f8fbff !important;
+}
+
+#hkStatsApp .hk-center {
+    text-align: center !important;
+}
+
+#hkStatsApp .hk-strong {
+    font-weight: 700 !important;
+    color: #111827 !important;
+}
+
+#hkStatsApp .hk-success {
+    font-weight: 700 !important;
+    color: #0a8a43 !important;
+}
+
+#hkStatsApp .hk-tdp-badge {
+    display: inline-flex !important;
+    align-items: center !important;
+    padding: 5px 8px !important;
+    border: 1px solid #d7dee8 !important;
+    border-radius: 6px !important;
+    background: #f8fafc !important;
+    color: #334155 !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+}
+
+#hkStatsApp .hk-count-btn {
+    appearance: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 7px !important;
+    padding: 7px 13px !important;
+    border: 1px solid #b9d4ff !important;
+    border-radius: 999px !important;
+    background: #eff6ff !important;
+    color: #2563eb !important;
+    font-size: 13px !important;
+    line-height: 1 !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    margin: 0 !important;
+}
+
+#hkStatsApp .hk-count-btn:hover {
+    background: #2563eb !important;
+    color: #fff !important;
+}
+
+#hkStatsApp .hk-phone {
+    color: #0d6efd !important;
+    font-weight: 700 !important;
+    white-space: nowrap !important;
+}
+
+#hkStatsApp .hk-loading,
+#hkStatsApp .hk-empty,
+#hkStatsApp .hk-error {
+    text-align: center !important;
+    padding: 32px 14px !important;
+}
+
+#hkStatsApp .hk-loading,
+#hkStatsApp .hk-empty {
+    color: #64748b !important;
+}
+
+#hkStatsApp .hk-error {
+    color: #dc2626 !important;
+}
+
+#hkStatsApp .hk-note {
+    margin-top: 10px !important;
+    color: #64748b !important;
+    font-size: 12px !important;
+    text-align: right !important;
+}
+
+
+#hkStatsApp .hk-pagination {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    flex-wrap: wrap !important;
+    margin-top: 16px !important;
+}
+#hkStatsApp .hk-pagination[hidden] {
+    display: none !important;
+}
+#hkStatsApp .hk-page-btn {
+    appearance: none !important;
+    min-width: 40px !important;
+    height: 38px !important;
+    padding: 0 12px !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 9px !important;
+    background: #fff !important;
+    color: #334155 !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+}
+#hkStatsApp .hk-page-btn:disabled {
+    opacity: .45 !important;
+    cursor: not-allowed !important;
+}
+#hkStatsApp .hk-page-info {
+    min-width: 180px;
+    text-align: center;
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+@media (max-width: 760px) {
+    #hkStatsApp {
+        margin: 12px auto;
+        padding: 0 8px;
+    }
+
+    #hkStatsApp .hk-header {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        padding: 20px !important;
+    }
+
+    #hkStatsApp .hk-title {
+        font-size: 23px !important;
+    }
+
+    #hkStatsApp .hk-header .hk-btn {
+        width: 100% !important;
+    }
+
+    #hkStatsApp .hk-card {
+        padding: 15px !important;
+    }
+
+    #hkStatsApp .hk-card-head {
+        align-items: stretch !important;
+    }
+
+    #hkStatsApp .hk-section-title {
+        width: 100% !important;
+    }
+
+    #hkStatsApp .hk-tools {
+        width: 100% !important;
+        justify-content: stretch !important;
+        margin-left: 0 !important;
+    }
+
+    #hkStatsApp .hk-select {
+        width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    #hkStatsApp .hk-tools .hk-btn {
+        flex: 1 1 auto !important;
+    }
+
+    #hkStatsApp .hk-note {
+        text-align: left !important;
+    }
+}
+</style>
+
+<div id="hkStatsApp">
+    <div class="hk-header">
+        <div class="hk-header-left">
+            <h2 class="hk-title">
+                <i class="fa-solid fa-chart-pie"></i>
+                Thống Kê Khảo Sát Dân Cư
+            </h2>
+            <p class="hk-subtitle">Hệ thống quản lý và trích xuất dữ liệu trực tuyến</p>
+        </div>
+        <button type="button" class="hk-btn hk-btn-light" id="hkRefreshBtn">
+            <i class="fa-solid fa-rotate"></i>
+            Làm mới dữ liệu
+        </button>
+    </div>
+
+    <div class="hk-card">
+        <div class="hk-card-head">
+            <div class="hk-section-title">
+                <i class="fa-solid fa-layer-group"></i>
+                <span>Tổng hợp số lượng khảo sát theo Tổ dân phố</span>
+            </div>
+            <span class="hk-stats-pill" id="hkTotalStats">Đang cập nhật...</span>
+        </div>
+
+        <div class="hk-table-wrap">
+            <table class="hk-table">
+                <thead>
+                    <tr>
+                        <th style="width:8%">STT</th>
+                        <th style="width:35%;text-align:left!important">Tổ dân phố</th>
+                        <th style="width:30%">Số hộ đã khảo sát</th>
+                        <th style="width:27%">Tổng nhân khẩu</th>
+                    </tr>
+                </thead>
+                <tbody id="hkSummaryBody">
+                    <tr>
+                        <td colspan="4" class="hk-loading">
+                            <i class="fa-solid fa-spinner fa-spin"></i>
+                            Đang tải dữ liệu...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="hk-card">
+        <div class="hk-card-head">
+            <div class="hk-section-title" id="hkDetailTitle">
+                <i class="fa-solid fa-address-book"></i>
+                <span>Danh sách chi tiết hộ gia đình</span>
+            </div>
+
+            <div class="hk-tools">
+                <select id="hkTdpFilter" class="hk-select">
+                    <option value="">-- Đang tải danh sách Tổ dân phố --</option>
+                </select>
+                <button type="button" class="hk-btn hk-btn-excel" id="hkExportBtn" disabled>
+                    <i class="fa-solid fa-file-excel"></i>
+                    Tải Excel hộ & thành viên
+                </button>
+            </div>
+        </div>
+
+        <div class="hk-table-wrap">
+            <table class="hk-table">
+                <thead>
+                    <tr>
+                        <th style="width:15%">Thời gian</th>
+                        <th style="width:20%;text-align:left!important">Tổ dân phố</th>
+                        <th style="width:25%;text-align:left!important">Số nhà / Tên đường</th>
+                        <th style="width:25%;text-align:left!important">Họ và tên chủ hộ</th>
+                        <th style="width:15%">Số điện thoại</th>
+                    </tr>
+                </thead>
+                <tbody id="hkDetailBody">
+                    <tr>
+                        <td colspan="5" class="hk-loading">
+                            <i class="fa-solid fa-spinner fa-spin"></i>
+                            Đang chờ dữ liệu...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="hk-pagination" id="hkPagination" hidden>
+            <button type="button" class="hk-page-btn" id="hkFirstPage">Đầu</button>
+            <button type="button" class="hk-page-btn" id="hkPrevPage">‹ Trước</button>
+            <span class="hk-page-info" id="hkPageInfo">Trang 1 / 1</span>
+            <button type="button" class="hk-page-btn" id="hkNextPage">Sau ›</button>
+            <button type="button" class="hk-page-btn" id="hkLastPage">Cuối</button>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" data-no-optimize="1" data-no-defer="1" data-nowprocket="1" nowprocket>(function(){"use strict";const WEB_APP_URL="https://script.google.com/macros/s/AKfycbwVkeIer5qjWmXuvor_DuRuLs7vmYjStjs8nVLTOVsxTQbkPf4wPaDkihu7QEq6uJElHg/exec";const SUMMARY_TIMEOUT_MS=6e4;const EXPORT_TIMEOUT_MS=12e4;const XLSX_URL="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js";let excelLibraryPromise=null;function loadExcelLibrary(){if(window.XLSX)return Promise.resolve(window.XLSX);if(excelLibraryPromise)return excelLibraryPromise;excelLibraryPromise=new Promise(function(resolve,reject){const script=document.createElement("script");const timer=setTimeout(function(){finish(new Error("Chưa tải được thư viện Excel. Vui lòng thử lại."))},3e4);let settled=false;function finish(error){if(settled)return;settled=true;clearTimeout(timer);script.onload=script.onerror=null;if(error){script.remove();reject(error)}else{resolve(window.XLSX)}}script.src=XLSX_URL;script.async=true;script.onload=function(){finish(window.XLSX?null:new Error("Thư viện Excel tải không đầy đủ."))};script.onerror=function(){finish(new Error("Không kết nối được thư viện Excel. Vui lòng thử lại."))};(document.head||document.documentElement).appendChild(script)}).catch(function(error){excelLibraryPromise=null;throw error});return excelLibraryPromise}function createApp(app){if(!app||app.dataset.initialized==="1")return!!app;let rawData=[];const PAGE_SIZE=20;let currentTdp="";let currentPage=1;let currentTotalPages=1;const $=id=>id==="hkStatsApp"?app:app.querySelector("#"+id);function escapeHtml(value){return String(value===undefined||value===null?"":value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;")}function maskPhone(phone){const digits=String(phone===undefined||phone===null?"":phone).replace(/\D/g,"");if(!digits)return"";return digits.length<=3?digits:"***"+digits.slice(-3)}function normalizeTdp(value){return String(value||"").trim()}function sanitizeFileName(name){return String(name||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/đ/g,"d").replace(/Đ/g,"D").replace(/[\\/:*?"<>|]/g,"-").replace(/\s+/g,"_").replace(/_+/g,"_").replace(/^_|_$/g,"")}function buildApiUrl(action,tdp){const params=new URLSearchParams;if(action)params.set("action",action);if(tdp)params.set("tdp",tdp);params.set("_",String(Date.now()));return WEB_APP_URL+(WEB_APP_URL.includes("?")?"&":"?")+params.toString()}async function fetchJson(url,retry=1,timeoutMs=SUMMARY_TIMEOUT_MS){const controller=new AbortController;const timeoutId=setTimeout(()=>controller.abort(),timeoutMs);let canRetry=false;try{const response=await fetch(url,{method:"GET",mode:"cors",credentials:"omit",cache:"no-store",redirect:"follow",signal:controller.signal});if(!response.ok){canRetry=response.status===429||response.status>=500;throw new Error("Máy chủ trả lỗi HTTP "+response.status+".")}const text=(await response.text()).replace(/^\uFEFF/,"");if(/^\s*</.test(text)){throw new Error("Địa chỉ Web App đang trả trang HTML thay vì dữ liệu. "+"Kiểm tra link /exec và quyền truy cập của bản triển khai.")}let result;try{result=JSON.parse(text)}catch(parseError){throw new Error("Dữ liệu máy chủ trả về không phải JSON hợp lệ.")}if(!result||result.result!=="success"){throw new Error(result&&result.message||"Máy chủ trả dữ liệu không hợp lệ.")}return result}catch(error){clearTimeout(timeoutId);const timedOut=error&&error.name==="AbortError";const networkError=error&&error.name==="TypeError";if(retry>0&&(canRetry||timedOut||networkError)){await new Promise(resolve=>setTimeout(resolve,1e3));return fetchJson(url,retry-1,timeoutMs)}if(timedOut){throw new Error("Máy chủ chưa trả dữ liệu sau "+Math.round(timeoutMs/1e3)+" giây. Vui lòng thử lại.")}if(networkError){throw new Error("Không kết nối được Web App. Kiểm tra mạng và quyền truy cập link /exec.")}throw error}finally{clearTimeout(timeoutId)}}async function loadDataFromGoogleSheet(){const refreshBtn=$("hkRefreshBtn");try{if(refreshBtn){refreshBtn.disabled=true;refreshBtn.innerHTML="<i class=\"fa-solid fa-spinner fa-spin\"></i> Đang tải..."}$("hkSummaryBody").innerHTML=`\n                    <tr>\n                        <td colspan="4" class="hk-loading">\n                            <i class="fa-solid fa-spinner fa-spin"></i>\n                            Đang kết nối lấy dữ liệu mới nhất...\n                        </td>\n                    </tr>\n                `;$("hkExportBtn").disabled=true;const result=await fetchJson(buildApiUrl("summary"));if(!Array.isArray(result.data)){throw new Error("Web App chưa trả danh sách thống kê. Kiểm tra bản triển khai đang dùng.")}rawData=result.data;renderSummaryTable();const firstTdp=populateDropdownFilter();if(firstTdp){executeFilter(firstTdp,false,1)}else{renderDetailTable([],"Danh sách chi tiết hộ gia đình");if($("hkPagination"))$("hkPagination").hidden=true}$("hkExportBtn").disabled=rawData.length===0}catch(error){console.error(error);rawData=[];currentTdp="";currentPage=currentTotalPages=1;$("hkTotalStats").textContent="Chưa tải được dữ liệu";$("hkTdpFilter").innerHTML="<option value=\"\">-- Chưa tải được danh sách --</option>";$("hkExportBtn").disabled=true;$("hkSummaryBody").innerHTML=`\n                    <tr>\n                        <td colspan="4" class="hk-error">\n                            Không thể tải dữ liệu: ${escapeHtml(error.message||error)}\n                        </td>\n                    </tr>\n                `;$("hkDetailBody").innerHTML=`\n                    <tr>\n                        <td colspan="5" class="hk-error">\n                            Không thể tải danh sách chi tiết.\n                        </td>\n                    </tr>\n                `;if($("hkPagination"))$("hkPagination").hidden=true}finally{if(refreshBtn){refreshBtn.disabled=false;refreshBtn.innerHTML="<i class=\"fa-solid fa-rotate\"></i> Làm mới dữ liệu"}}}function processSummaryData(){const summary={};let totalHouseholds=0;let totalCitizens=0;rawData.forEach(item=>{const tdp=normalizeTdp(item.tdp)||"Chưa phân loại";const members=parseInt(item.members,10)||0;if(!summary[tdp]){summary[tdp]={count:0,totalMembers:0}}summary[tdp].count+=1;summary[tdp].totalMembers+=members;totalHouseholds+=1;totalCitizens+=members});$("hkTotalStats").innerHTML=`Tổng: <strong>${totalHouseholds}</strong> hộ / <strong>${totalCitizens}</strong> nhân khẩu`;return summary}function renderSummaryTable(){const tbody=$("hkSummaryBody");const summary=processSummaryData();const entries=Object.entries(summary).sort((a,b)=>a[0].localeCompare(b[0],"vi"));if(!entries.length){tbody.innerHTML=`\n                    <tr>\n                        <td colspan="4" class="hk-empty">Chưa có dữ liệu khảo sát.</td>\n                    </tr>\n                `;return}tbody.innerHTML=entries.map(([tdp,data],index)=>`\n                <tr>\n                    <td class="hk-center">${index+1}</td>\n                    <td class="hk-strong">\n                        <i class="fa-solid fa-map-pin" style="color:#e11d48;margin-right:7px"></i>\n                        ${escapeHtml(tdp)}\n                    </td>\n                    <td class="hk-center">\n                        <button type="button"\n                                class="hk-count-btn"\n                                data-hk-tdp="${escapeHtml(tdp)}">\n                            <i class="fa-solid fa-house-chimney"></i>\n                            ${data.count} hộ\n                            <i class="fa-solid fa-chevron-right"></i>\n                        </button>\n                    </td>\n                    <td class="hk-center hk-success">${data.totalMembers} người</td>\n                </tr>\n            `).join("");tbody.querySelectorAll("[data-hk-tdp]").forEach(button=>{button.addEventListener("click",()=>{const tdp=button.getAttribute("data-hk-tdp")||"";$("hkTdpFilter").value=tdp;executeFilter(tdp,true,1)})})}function populateDropdownFilter(){const select=$("hkTdpFilter");const currentValue=select.value;const tdpSet=new Set;rawData.forEach(item=>{const tdp=normalizeTdp(item.tdp);if(tdp)tdpSet.add(tdp)});const options=Array.from(tdpSet).sort((a,b)=>a.localeCompare(b,"vi",{numeric:true}));select.innerHTML=options.map(tdp=>`<option value="${escapeHtml(tdp)}">${escapeHtml(tdp)}</option>`).join("");if(!options.length)return"";select.value=options.includes(currentValue)?currentValue:options[0];return select.value}function renderDetailTable(dataToShow,titleText){const tbody=$("hkDetailBody");const title=$("hkDetailTitle");title.innerHTML=`\n                <i class="fa-solid fa-address-book"></i>\n                <span>${escapeHtml(titleText||"Danh sách chi tiết hộ gia đình")}</span>\n            `;if(!Array.isArray(dataToShow)||!dataToShow.length){tbody.innerHTML=`\n                    <tr>\n                        <td colspan="5" class="hk-empty">Không có dữ liệu.</td>\n                    </tr>\n                `;return}tbody.innerHTML=dataToShow.map(item=>`\n                <tr>\n                    <td class="hk-center">${escapeHtml(item.time||"")}</td>\n                    <td><span class="hk-tdp-badge">${escapeHtml(item.tdp||"Chưa rõ")}</span></td>\n                    <td>${escapeHtml(item.address||"")}</td>\n                    <td class="hk-strong">\n                        <i class="fa-solid fa-user-tie" style="color:#0d6efd;margin-right:7px"></i>\n                        ${escapeHtml(item.name||"")}\n                    </td>\n                    <td class="hk-center hk-phone">\n                        <i class="fa-solid fa-phone" style="margin-right:5px"></i>\n                        ${escapeHtml(maskPhone(item.phone))}\n                    </td>\n                </tr>\n            `).join("")}function renderPagination(totalRows){const pagination=$("hkPagination");if(!pagination)return;if(!totalRows){pagination.hidden=true;return}currentTotalPages=Math.max(1,Math.ceil(totalRows/PAGE_SIZE));currentPage=Math.min(Math.max(1,currentPage),currentTotalPages);if($("hkPageInfo")){$("hkPageInfo").textContent=`Trang ${currentPage} / ${currentTotalPages} · ${totalRows} hộ`}["hkFirstPage","hkPrevPage"].forEach(function(id){if($(id))$(id).disabled=currentPage<=1});["hkNextPage","hkLastPage"].forEach(function(id){if($(id))$(id).disabled=currentPage>=currentTotalPages});pagination.hidden=false}function executeFilter(tdpName,scrollToTable,page=1){const selected=normalizeTdp(tdpName)||$("hkTdpFilter").value;if(!selected){renderDetailTable([],"Danh sách chi tiết hộ gia đình");if($("hkPagination"))$("hkPagination").hidden=true;return}currentTdp=selected;currentPage=Math.max(1,Number(page)||1);$("hkTdpFilter").value=selected;const filtered=rawData.filter(item=>normalizeTdp(item.tdp)===selected);currentTotalPages=Math.max(1,Math.ceil(filtered.length/PAGE_SIZE));if(currentPage>currentTotalPages)currentPage=currentTotalPages;const start=(currentPage-1)*PAGE_SIZE;const pageRows=filtered.slice(start,start+PAGE_SIZE);renderDetailTable(pageRows,`Danh sách hộ - ${selected} (${filtered.length} hộ)`);renderPagination(filtered.length);if(scrollToTable){$("hkDetailTitle").scrollIntoView({behavior:"smooth",block:"start"})}}function findHeaderIndex(headers,candidates){const normalize=value=>String(value||"").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/đ/g,"d");const normalizedCandidates=candidates.map(normalize);return headers.findIndex(header=>normalizedCandidates.includes(normalize(header)))}async function downloadFullExcel(){
+const exportBtn=$("hkExportBtn");
+const selectedTdp=$("hkTdpFilter").value;
+const originalHtml=exportBtn.innerHTML;
+
+try{
+exportBtn.disabled=true;
+exportBtn.innerHTML="<i class=\"fa-solid fa-spinner fa-spin\"></i> Đang lấy dữ liệu...";
+
+const[result,XLSX]=await Promise.all([
+fetchJson(buildApiUrl("exportPackage",selectedTdp),1,EXPORT_TIMEOUT_MS),
+loadExcelLibrary()
+]);
+
+const households=result.households||{};
+const members=result.members||{};
+
+const householdHeaders=Array.isArray(households.headers)?households.headers:[];
+const householdRows=Array.isArray(households.rows)?households.rows:[];
+const memberHeaders=Array.isArray(members.headers)?members.headers:[];
+const memberRows=Array.isArray(members.rows)?members.rows:[];
+
+if(!householdHeaders.length||!memberHeaders.length){
+throw new Error("Web App chưa trả đầy đủ dữ liệu hộ và thành viên.");
+}
+
+function normalizeHeader(value){
+return String(value||"")
+.trim()
+.toLowerCase()
+.normalize("NFD")
+.replace(/[\u0300-\u036f]/g,"")
+.replace(/đ/g,"d");
+}
+
+function findIndex(headers,candidates){
+const normalizedCandidates=candidates.map(normalizeHeader);
+return headers.findIndex(function(header){
+return normalizedCandidates.includes(normalizeHeader(header));
+});
+}
+
+/* =========================================================
+   SHEET 1 - DANH SÁCH HỘ
+   Chỉ xuất đúng 06 cột theo file Excel mẫu
+   ========================================================= */
+const householdIndexes=[
+findIndex(householdHeaders,["Mã hộ","Ma ho"]),
+findIndex(householdHeaders,["Thời gian (Timestamp)","Thời gian","Timestamp"]),
+findIndex(householdHeaders,["Tổ dân phố","TDP"]),
+findIndex(householdHeaders,["Số nhà / Tên đường","Địa chỉ"]),
+findIndex(householdHeaders,["Họ và tên","Họ và tên chủ hộ","Chủ hộ"]),
+findIndex(householdHeaders,["Số điện thoại","SĐT","Điện thoại"])
+];
+
+const householdLabels=[
+"MÃ HỘ",
+"THỜI GIAN",
+"TỔ DÂN PHỐ",
+"SỐ NHÀ / TÊN ĐƯỜNG",
+"HỌ VÀ TÊN CHỦ HỘ",
+"SỐ ĐIỆN THOẠI"
+];
+
+const missingHousehold=householdIndexes
+.map(function(index,i){return index<0?householdLabels[i]:"";})
+.filter(Boolean);
+
+if(missingHousehold.length){
+throw new Error("Thiếu cột dữ liệu hộ: "+missingHousehold.join(", "));
+}
+
+const householdExcelRows=householdRows.map(function(row){
+return[
+row[householdIndexes[0]]||"",
+row[householdIndexes[1]]||"",
+row[householdIndexes[2]]||"",
+row[householdIndexes[3]]||"",
+row[householdIndexes[4]]||"",
+maskPhone(row[householdIndexes[5]]||"")
+];
+});
+
+const householdWorksheet=XLSX.utils.aoa_to_sheet([
+householdLabels,
+...householdExcelRows
+]);
+
+householdWorksheet["!cols"]=[
+{wch:29},
+{wch:21},
+{wch:18},
+{wch:34},
+{wch:30},
+{wch:16}
+];
+
+/* =========================================================
+   SHEET 2 - THÀNH VIÊN
+   Chỉ xuất đúng 07 cột theo file Excel mẫu
+   ========================================================= */
+const memberIndexes=[
+findIndex(memberHeaders,["Mã hộ","Ma ho"]),
+findIndex(memberHeaders,["Tổ dân phố","TDP"]),
+findIndex(memberHeaders,["Số nhà / Tên đường","Địa chỉ"]),
+findIndex(memberHeaders,["STT thành viên","STT"]),
+findIndex(memberHeaders,["Họ và tên","Họ tên thành viên","Họ và tên thành viên"]),
+findIndex(memberHeaders,["Ngày tháng năm sinh","Ngày sinh","Ngay thang nam sinh"]),
+findIndex(memberHeaders,["Quan hệ với người khai báo","Quan hệ","Quan hệ với chủ hộ"])
+];
+
+const memberLabels=[
+"MÃ HỘ",
+"TỔ DÂN PHỐ",
+"SỐ NHÀ / TÊN ĐƯỜNG",
+"STT THÀNH VIÊN",
+"HỌ VÀ TÊN THÀNH VIÊN",
+"NGÀY THÁNG NĂM SINH",
+"QUAN HỆ VỚI NGƯỜI KHAI BÁO"
+];
+
+const missingMember=memberIndexes
+.map(function(index,i){return index<0?memberLabels[i]:"";})
+.filter(Boolean);
+
+if(missingMember.length){
+throw new Error("Thiếu cột dữ liệu thành viên: "+missingMember.join(", "));
+}
+
+const memberExcelRows=memberRows.map(function(row){
+return[
+row[memberIndexes[0]]||"",
+row[memberIndexes[1]]||"",
+row[memberIndexes[2]]||"",
+row[memberIndexes[3]]||"",
+row[memberIndexes[4]]||"",
+row[memberIndexes[5]]||"",
+row[memberIndexes[6]]||""
+];
+});
+
+const memberWorksheet=XLSX.utils.aoa_to_sheet([
+memberLabels,
+...memberExcelRows
+]);
+
+memberWorksheet["!cols"]=[
+{wch:29},
+{wch:18},
+{wch:34},
+{wch:17},
+{wch:30},
+{wch:21},
+{wch:31}
+];
+
+/* Tạo workbook đúng 02 sheet như file mẫu */
+const workbook=XLSX.utils.book_new();
+XLSX.utils.book_append_sheet(workbook,householdWorksheet,"Danh sách hộ");
+XLSX.utils.book_append_sheet(workbook,memberWorksheet,"Thành viên");
+
+const now=new Date();
+const dd=String(now.getDate()).padStart(2,"0");
+const mm=String(now.getMonth()+1).padStart(2,"0");
+const yyyy=now.getFullYear();
+
+const filterPart=selectedTdp?sanitizeFileName(selectedTdp):"tat_ca_52_to";
+
+XLSX.writeFile(
+workbook,
+`du_lieu_ho_va_thanh_vien_${filterPart}_${dd}-${mm}-${yyyy}.xlsx`
+);
+
+}catch(error){
+console.error("Lỗi tải Excel:",error);
+alert("Không thể xuất Excel: "+(error.message||error));
+}finally{
+exportBtn.disabled=false;
+exportBtn.innerHTML=originalHtml;
+}
+}function init(){const requiredIds=["hkRefreshBtn","hkTdpFilter","hkExportBtn","hkTotalStats","hkSummaryBody","hkDetailBody","hkDetailTitle"];if(requiredIds.some(id=>!$(id)))return false;app.dataset.initialized="1";function bindClick(id,handler){const element=$(id);if(element)element.addEventListener("click",handler)}bindClick("hkRefreshBtn",loadDataFromGoogleSheet);$("hkTdpFilter").addEventListener("change",function(){executeFilter(this.value,false,1)});bindClick("hkExportBtn",downloadFullExcel);bindClick("hkFirstPage",function(){if(currentPage>1)executeFilter(currentTdp,false,1)});bindClick("hkPrevPage",function(){if(currentPage>1)executeFilter(currentTdp,false,currentPage-1)});bindClick("hkNextPage",function(){if(currentPage<currentTotalPages)executeFilter(currentTdp,false,currentPage+1)});bindClick("hkLastPage",function(){if(currentPage<currentTotalPages)executeFilter(currentTdp,false,currentTotalPages)});loadDataFromGoogleSheet();return true}return init()}function boot(){let initialized=0;document.querySelectorAll("#hkStatsApp").forEach(function(app){if(createApp(app))initialized++});return initialized}function begin(){if(boot()||typeof MutationObserver==="undefined")return;const observer=new MutationObserver(function(){if(boot())observer.disconnect()});observer.observe(document.documentElement,{childList:true,subtree:true})}if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",begin,{once:true})}else{begin()}})();</script>
